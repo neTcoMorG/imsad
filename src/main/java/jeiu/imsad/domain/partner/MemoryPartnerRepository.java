@@ -1,13 +1,12 @@
-package jeiu.imsad.repository;
+package jeiu.imsad.domain.partner;
 
-import jeiu.imsad.domain.Partner;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class MemoryPartnerRepository implements PartnerRepository{
+public class MemoryPartnerRepository implements PartnerRepository {
 
     private static List<Partner> store = new ArrayList<>();
 

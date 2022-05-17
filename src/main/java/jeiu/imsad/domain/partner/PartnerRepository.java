@@ -1,6 +1,6 @@
-package jeiu.imsad.repository;
+package jeiu.imsad.domain.partner;
 
-import jeiu.imsad.domain.Partner;
+import jeiu.imsad.domain.partner.Partner;
 
 import java.util.List;
 

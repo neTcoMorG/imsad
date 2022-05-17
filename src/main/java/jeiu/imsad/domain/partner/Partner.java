@@ -1,4 +1,4 @@
-package jeiu.imsad.domain;
+package jeiu.imsad.domain.partner;
 
 import lombok.Data;
 

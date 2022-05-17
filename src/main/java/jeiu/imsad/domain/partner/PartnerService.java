@@ -1,7 +1,7 @@
-package jeiu.imsad.service;
+package jeiu.imsad.domain.partner;
 
-import jeiu.imsad.domain.Partner;
-import jeiu.imsad.repository.MemoryPartnerRepository;
+import jeiu.imsad.domain.partner.Partner;
+import jeiu.imsad.domain.partner.MemoryPartnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

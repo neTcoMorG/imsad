@@ -1,6 +1,6 @@
 package jeiu.imsad.validation;
 
-import jeiu.imsad.domain.Partner;
+import jeiu.imsad.domain.partner.Partner;
 import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;
