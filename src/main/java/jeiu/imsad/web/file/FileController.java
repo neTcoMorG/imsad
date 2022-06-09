@@ -33,7 +33,7 @@ public class FileController {
         Partner partner = (Partner) session.getAttribute("LOGIN");
         store.saveFile(file, partner);
 
-        return "redirect:/";
+        return "redirect:/my";
     }
 
     @ResponseBody
