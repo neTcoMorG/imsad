@@ -1,5 +1,6 @@
 package jeiu.imsad.web.partner;
 
+import jeiu.imsad.domain.file.JpaFileRepository;
 import jeiu.imsad.domain.file.MemoryFileRepository;
 import jeiu.imsad.domain.partner.Partner;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +19,12 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class PartnerController {
 
-    private final MemoryFileRepository fileRepository;
+    private final JpaFileRepository fileRepository;
 
     @GetMapping
     public String home(Model model, HttpServletRequest request) {
         Partner partner = (Partner) request.getSession(false).getAttribute("LOGIN");
-        model.addAttribute("files", fileRepository.findByPartner(partner));
+        model.addAttribute("files", fileRepository.findByUploader(partner));
         return "/test/upload-form";
     }
 }

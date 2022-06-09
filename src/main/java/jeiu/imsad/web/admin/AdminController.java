@@ -35,19 +35,18 @@ public class AdminController {
     @Value("${file.dir}")
     private String rootPath;
 
-    @GetMapping("/my")
-    public String adminSpace(Model model) {
-        return "/admin/home";
-    }
-
     @GetMapping
     public String adminHome(Model model, @RequestParam(required = false) String companyId,
                             HttpServletRequest request, HttpServletResponse response) throws IOException {
         model.addAttribute("partners", partnerService.getPartners()); // 리스트에 협력사들 넘김
+        model.addAttribute("admin", partnerService
+                .getPartners().stream().filter(p -> p.getLoginId().equals(ADMIN_CONST.ADMIN_ID))
+                .findFirst().orElseThrow(() -> new IllegalArgumentException("어드민 홈 컨트롤러 에러")));
+
         if (companyId != null) {
-            log.info("companyId={}", companyId);
             Partner partner = partnerService.findById(Long.parseLong(companyId));
             model.addAttribute("select", fileRepository.findByUploader(partner));
+            model.addAttribute("select_companyName", partner.getCompanyName());
             return "/admin/home";
         }
 

@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,6 +25,12 @@ public class LoginController {
 
     private final LoginService loginService;
     private final JpaPartnerRepository repository;
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        request.getSession(false).invalidate();
+        return "redirect:/";
+    }
 
     @GetMapping("/login")
     public String loginForm(@ModelAttribute("loginForm") LoginForm form) {
