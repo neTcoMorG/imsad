@@ -1,7 +1,7 @@
 package jeiu.imsad.domain.login;
 
-import jeiu.imsad.domain.member.Member;
-import jeiu.imsad.domain.member.MemberRepository;
+import jeiu.imsad.domain.partner.JpaPartnerRepository;
+import jeiu.imsad.domain.partner.Partner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +9,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LoginService {
 
-    private final MemberRepository memberRepository;
+    private final JpaPartnerRepository repository;
 
-    public Member login(String loginId, String password) {
-        return memberRepository.findByLoginId(loginId).filter(m -> m.getPassword().equals(password))
-                .orElse(null);
+    public void save(Partner partner) {
+        repository.save(partner);
+    }
+
+    public Partner login(Partner partner) {
+        Partner loginMember = repository.findByLoginId(partner.getLoginId());
+        if (loginMember != null && loginMember.getPassword().equals(partner.getPassword())) {
+            return loginMember;
+        }
+        return null;
     }
 }

@@ -1,15 +1,12 @@
 package jeiu.imsad.domain.partner;
 
-import jeiu.imsad.domain.partner.Partner;
-
 import java.util.List;
 
 public interface PartnerRepository {
 
-    Long save(Partner partner);
-
+    void save(Partner partner);
     Partner findById(Long id);
-    Partner findByName(String name);
+    Partner findByLoginId(String loginId);
     Partner findByPhone(String phone);
     List<Partner> findAll();
 

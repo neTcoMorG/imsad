@@ -1,25 +1,37 @@
 package jeiu.imsad.domain.partner;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @Repository
 public class MemoryPartnerRepository implements PartnerRepository {
 
-    private static List<Partner> store = new ArrayList<>();
+    private static Map<Long, Partner> store = new HashMap<>();
+    private static Long sequence = 0L;
 
     @Override
-    public Long save(Partner partner) {
-        store.add(partner);
-        return partner.getId();
+    public void save(Partner partner) {
+        partner.setId(++sequence);
+        store.put(partner.getId(), partner);
+        log.info("create partnerId={}", sequence);
     }
 
     @Override
     public Partner findById(Long id) {
-        for (Partner p : store) {
-            if (p.getId() == id) {
+        return store.get(id);
+    }
+
+    public Partner findByCompany(String company) {
+        Partner p;
+        for (Long aLong : store.keySet()) {
+            p = store.get(aLong);
+            if (p.getCompanyName().equals(company)) {
                 return p;
             }
         }
@@ -27,9 +39,11 @@ public class MemoryPartnerRepository implements PartnerRepository {
     }
 
     @Override
-    public Partner findByName(String name) {
-        for (Partner p : store) {
-            if (p.getCompany().equals(name)) {
+    public Partner findByLoginId(String loginId) {
+        Partner p;
+        for (Long aLong : store.keySet()) {
+            p = store.get(aLong);
+            if (p.getLoginId().equals(loginId)) {
                 return p;
             }
         }
@@ -43,7 +57,7 @@ public class MemoryPartnerRepository implements PartnerRepository {
 
     @Override
     public List<Partner> findAll() {
-        return store;
+        return new ArrayList<>(store.values());
     }
 
     @Override

@@ -1,36 +1,29 @@
 package jeiu.imsad.web.partner;
 
+import jeiu.imsad.domain.file.MemoryFileRepository;
 import jeiu.imsad.domain.partner.Partner;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.validation.Valid;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Slf4j
 @Controller
-@RequestMapping("/잠시테스트하려고없앰")
+@RequestMapping("/my")
+@RequiredArgsConstructor
 public class PartnerController {
 
-    /* /add 주소로 접근 시 페이지 리턴 */
-    @GetMapping
-    public String addPage() {
-        return "add/index";
-    }
+    private final MemoryFileRepository fileRepository;
 
-    /* 파트너 생성 */
-    @PostMapping
-    public String addPartner(@Valid @ModelAttribute Partner partner, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            log.info("errors={}", bindingResult);
-            model.addAttribute("errors", bindingResult);
-            return "add/index";
-        }
-        return "redirect:/";
+    @GetMapping
+    public String home(Model model, HttpServletRequest request) {
+        Partner partner = (Partner) request.getSession(false).getAttribute("LOGIN");
+        model.addAttribute("files", fileRepository.findByPartner(partner));
+        return "/test/upload-form";
     }
 }
