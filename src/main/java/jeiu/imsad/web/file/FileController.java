@@ -4,7 +4,9 @@ import jeiu.imsad.domain.ADMIN_CONST;
 import jeiu.imsad.domain.file.DriveManager;
 import jeiu.imsad.domain.file.FileStore;
 import jeiu.imsad.domain.file.JpaFileRepository;
+import jeiu.imsad.domain.partner.JpaPartnerRepository;
 import jeiu.imsad.domain.partner.Partner;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,9 +33,10 @@ public class FileController {
 
     private final FileStore store;
     private final JpaFileRepository fileRepository;
+    private final JpaPartnerRepository partnerRepository;
     private final DriveManager driveManager;
 
-    @PostMapping
+    //@PostMapping
     public String upload(@RequestParam MultipartFile file, HttpServletRequest request) throws IOException {
         HttpSession session = request.getSession(false);
         Partner partner = (Partner) session.getAttribute("LOGIN");
@@ -44,6 +47,29 @@ public class FileController {
         if (partner.getLoginId().equals(ADMIN_CONST.ADMIN_ID)) {
             return "redirect:/admin?companyId=" + partner.getId();
         }
+        return "redirect:" + referURL;
+    }
+
+    @PostMapping
+    public String uploadV2(@RequestParam MultipartFile file,
+                           @RequestParam Long companyId,
+                           HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession(false);
+        Partner partner = (Partner) partnerRepository.findById(companyId).get();
+
+        //업로더가 본인의 공간에 올리지 않는 경우
+        if (!partner.getId().equals(companyId)) {
+            if (partner.getLoginId().equals(ADMIN_CONST.ADMIN_ID)) { //근데 어드민일 경우
+                store.saveFile(file, partner);
+                return "redirect:/admin?companyId=" + partner.getId();
+            }
+            //어드민이 아니면
+            response.sendError(403);
+            return null;
+        }
+
+        String referURL = request.getHeader("Referer");
+        store.saveFile(file, partner);
 
         return "redirect:" + referURL;
     }

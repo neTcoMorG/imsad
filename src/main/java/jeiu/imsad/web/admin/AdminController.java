@@ -47,6 +47,7 @@ public class AdminController {
             Partner partner = partnerService.findById(Long.parseLong(companyId));
             model.addAttribute("select", fileRepository.findByUploader(partner));
             model.addAttribute("select_companyName", partner.getCompanyName());
+            model.addAttribute("select_companyId", companyId);
             return "/admin/home";
         }
 

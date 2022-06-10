@@ -10,6 +10,7 @@
 <body class="text-center mt-5">
 <form th:action="'/file'" method="post" enctype="multipart/form-data">
     <input type="file" name="file" />
+    <input style="display:none;" type="text" name="companyId" th:value="${company_Id}" />
     <button type="submit">전송!</button>
 </form>
 <ul class="mt-5">

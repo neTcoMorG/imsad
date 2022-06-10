@@ -1,5 +1,6 @@
 package jeiu.imsad.web.file;
 
+import jeiu.imsad.domain.ADMIN_CONST;
 import jeiu.imsad.domain.file.FileStore;
 import jeiu.imsad.domain.file.JpaFileRepository;
 import jeiu.imsad.domain.partner.JpaPartnerRepository;
@@ -13,13 +14,12 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLEncoder;
 
@@ -32,6 +32,7 @@ public class AdminFileController {
     private final JpaPartnerRepository repository;
     private final JpaFileRepository fileRepository;
     private final FileStore store;
+
 
     @ResponseBody
     @GetMapping("/download/{company}/{fileUUID}")

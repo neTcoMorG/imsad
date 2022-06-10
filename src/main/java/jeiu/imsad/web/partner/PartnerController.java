@@ -25,6 +25,7 @@ public class PartnerController {
     public String home(Model model, HttpServletRequest request) {
         Partner partner = (Partner) request.getSession(false).getAttribute("LOGIN");
         model.addAttribute("files", fileRepository.findByUploader(partner));
+        model.addAttribute("company_Id", partner.getId());
         return "/test/upload-form";
     }
 }
